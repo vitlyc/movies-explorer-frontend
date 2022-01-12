@@ -5,10 +5,7 @@ import Navigation from "../Navigation/Navigation";
 export default function Profile() {
   return (
     <>
-      <Header
-        style={{ backgroundColor: "#FFFFFF" }}
-        children={<Navigation />}
-      />
+      <Header style={{ backgroundColor: "#FFFFFF" }} children={<Navigation />} />
       <main className="profile">
         <h1 className="profile__header">Привет, Виталий!</h1>
         <div className="profile__form">
@@ -27,20 +24,13 @@ export default function Profile() {
 
             <label className="form-profile__label">
               E-mail
-              <input
-                type="email"
-                className="form-profile__input"
-                name="email"
-                placeholder="Ваш e-mail"
-              />
+              <input type="email" className="form-profile__input" name="email" placeholder="Ваш e-mail" />
             </label>
           </form>
         </div>
         <button className="profile__button">Редактировать</button>
 
-        <button className="profile__button profile__exit-button">
-          Выйти из аккаунта
-        </button>
+        <button className="profile__button profile__exit-button">Выйти из аккаунта</button>
       </main>
     </>
   );

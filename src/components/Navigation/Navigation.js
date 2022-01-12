@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 
 export default function Navigation() {
   return (
-    <div class="navigation">
+    <div className="navigation">
       <input id="menu-toggle" type="checkbox" />
-      <label class="menu-button-container" for="menu-toggle">
-        <div class="menu-button"></div>
+      <label className="menu-button-container" htmlFor="menu-toggle">
+        <div className="menu-button"></div>
       </label>
-      <ul class="menu">
+      <ul className="menu">
         <li>
           <Link to="/">Главная</Link>
         </li>

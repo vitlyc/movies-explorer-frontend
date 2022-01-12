@@ -7,29 +7,17 @@ export default function Portfolio() {
         <div className="portfolio__header">Портфолио</div>
         <ul className="portfolio__list">
           <li className="portfolio__work">
-            <a
-              href="https://github.com/"
-              className="portfolio__link"
-              target="_blank"
-            >
+            <a href="https://github.com/" className="portfolio__link" target="_blank" rel="noreferrer">
               Статичный сайт
             </a>
           </li>
           <li className="portfolio__work">
-            <a
-              href="https://github.com/"
-              className="portfolio__link"
-              target="_blank"
-            >
+            <a href="https://github.com/" className="portfolio__link" target="_blank" rel="noreferrer">
               Адаптивный сайт
             </a>
           </li>
           <li className="portfolio__work">
-            <a
-              href="https://github.com/"
-              className="portfolio__link"
-              target="_blank"
-            >
+            <a href="https://github.com/" className="portfolio__link" target="_blank" rel="noreferrer">
               Одностраничное приложение
             </a>
           </li>

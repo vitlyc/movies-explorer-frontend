@@ -9,22 +9,12 @@ export default function Footer() {
           <p className="">&copy; 2021</p>
           <ul className="footer__list">
             <li className="footer__link">
-              <a
-                href="https://practicum.yandex.ru/"
-                target="_blank"
-                rel="noreferrer"
-                className="footer__link"
-              >
+              <a href="https://practicum.yandex.ru/" target="_blank" rel="noreferrer" className="footer__link">
                 Яндекс.Практикум
               </a>
             </li>
             <li className="footer__link">
-              <a
-                href="https://github.com/Yandex-Practicum"
-                target="_blank"
-                rel="noreferrer"
-                className="footer__link"
-              >
+              <a href="https://github.com/Yandex-Practicum" target="_blank" rel="noreferrer" className="footer__link">
                 Github
               </a>
             </li>

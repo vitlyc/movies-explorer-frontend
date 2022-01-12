@@ -18,14 +18,7 @@ export default function Login() {
             <label htmlFor="email" className="form__label">
               E-mail
             </label>
-            <input
-              required
-              id="email"
-              type="email"
-              className="form__input"
-              name="email"
-              placeholder="Введите e-mail"
-            />
+            <input required id="email" type="email" className="form__input" name="email" placeholder="Введите e-mail" />
             <label htmlFor="password" className="form__label">
               Пароль
             </label>
