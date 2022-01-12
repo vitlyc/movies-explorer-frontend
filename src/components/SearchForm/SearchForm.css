@@ -1,0 +1,117 @@
+.search-form {
+    padding: 70px 70px 47px;
+}
+
+.form-search {
+    display: flex;
+    border-bottom: #e8e8e8 1px solid;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: content-box;
+}
+
+.form-search__submit-button {
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: 500;
+    background: #3456f3;
+    border-radius: 48px;
+    border: none;
+    color: #ffffff;
+    text-align: center;
+    padding: 0 10px;
+    align-self: flex-start;
+    height: 34px;
+    cursor: pointer;
+}
+
+.form-search__input {
+    border: none;
+    font-weight: 500;
+    font-size: 28px;
+    line-height: 34px;
+    color: #a0a0a0;
+    width: 100%;
+    padding-bottom: 15px;
+    outline: none;
+}
+
+.switch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 32px 0 0px;
+}
+
+.switch__label {
+    font-size: 13px;
+    line-height: 18px;
+}
+
+.switch__input {
+    display: block;
+    margin-right: 14px;
+    position: relative;
+    width: 36px;
+    height: 20px;
+    -webkit-appearance: none;
+    outline: none;
+    background-color: #ebebeb;
+    border-radius: 20px;
+    transition: background-color 0.4s ease-out;
+    cursor: pointer;
+}
+
+.switch__input:checked {
+    background-color: #3ddc84;
+}
+
+.switch__input::before {
+    content: "";
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    top: 2px;
+    left: 2px;
+    transition: left 0.2s ease-out;
+}
+
+.switch__input:checked::before {
+    left: 18px;
+    background-color: #fff;
+}
+
+@media screen and (max-width: 850px) {
+    .search-form {
+        padding: 80px 30px 60px;
+    }
+    .switch {
+        flex-direction: row-reverse;
+        padding: 29px 0 0px;
+    }
+    .switch__label {
+        margin-right: 16px;
+    }
+    .switch__input {
+        margin-right: 0px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .search-form {
+        padding: 84px 14px 50px;
+    }
+    .switch {
+        flex-direction: row-reverse;
+        padding: 40px 0 0px;
+        justify-content: center;
+    }
+    .switch__label {
+        margin-right: 16px;
+    }
+    .switch__input {
+        margin-right: 0px;
+    }
+}

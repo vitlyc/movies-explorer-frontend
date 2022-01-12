@@ -1,0 +1,117 @@
+.about-project {
+    width: 100%;
+    background: #ffffff;
+    padding: 0;
+    margin: 0;
+}
+
+.about-project__articles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+}
+
+.about-project__article {
+    max-width: 550px;
+}
+
+.about-project__title {
+    padding: 70px 0 26px;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.04em;
+}
+
+.about-project__text {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.timeline {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 50px;
+    padding: 110px 0 130px;
+}
+
+.timeline__indicator {
+    height: 36px;
+    background: #f2f2f2;
+    font-size: 14px;
+    line-height: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+}
+
+.timeline__indicator_highlight {
+    height: 36px;
+    background: #2be080;
+}
+
+.timeline__title {
+    color: #a0a0a0;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+    padding-top: 14px;
+}
+
+@media screen and (max-width: 850px) {
+    .about-project__articles {
+        column-gap: 30px;
+    }
+    .about-project__title {
+        padding: 70px 0 22px;
+    }
+    .about-project__text {
+        font-size: 12px;
+        line-height: 18px;
+    }
+    .timeline {
+        padding: 93px 0 107px;
+    }
+    .timeline__indicator_highlight {
+        width: 140px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .about-project__articles {
+        /* display: grid;
+                grid-template-columns: 1fr;
+                column-gap: 40px; */
+        display: flex;
+        flex-direction: column;
+    }
+    .about-project__article:last-of-type {
+        margin-top: -4px;
+    }
+    .about-project__title {
+        padding: 60px 0 16px;
+        font-size: 18px;
+        line-height: 22px;
+    }
+    .about-project__text {
+        font-size: 11px;
+        line-height: 16px;
+    }
+    .timeline {
+        padding: 60px 0 78px;
+    }
+    .timeline__indicator_highlight {
+        width: 100px;
+        height: 35px;
+    }
+    .timeline__indicator {
+        font-size: 11px;
+        line-height: 13px;
+    }
+    .timeline__title {
+        font-size: 11px;
+        line-height: 13px;
+        padding-top: 10px;
+    }
+}
