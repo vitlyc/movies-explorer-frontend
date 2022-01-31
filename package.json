@@ -15,7 +15,7 @@
         "web-vitals": "^2.1.2"
     },
     "scripts": {
-        "deploy": "npm run build && scp -r ./build/* praktikum@51.250.18.100:/home/praktikum/diploma/frontend",
+        "deploy": "npm run build && scp -r ./build/* praktikum@62.84.120.96:/home/praktikum/diploma/frontend",
         "start": "react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",

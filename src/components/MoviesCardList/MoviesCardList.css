@@ -5,13 +5,17 @@
     align-items: center;
 }
 
+.movies-cardlist__message {
+    color: black;
+}
+
 .movies-cardlist__list {
     display: grid;
     grid-template-columns: repeat(3, 360px);
     justify-items: center;
     grid-row-gap: 60px;
     grid-column-gap: 30px;
-    display: none;
+    /* display: none; */
 }
 
 @media screen and (max-width: 1215px) {

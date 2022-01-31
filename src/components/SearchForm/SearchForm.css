@@ -36,6 +36,12 @@
     outline: none;
 }
 
+
+/* .form-search__input:focus {
+    outline: 1px solid rgba(11, 246, 38, 0.5);
+    transition: outline 0.5s ease-out;
+} */
+
 .switch {
     display: flex;
     flex-direction: row;
