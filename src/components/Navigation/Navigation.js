@@ -26,4 +26,3 @@ export default function Navigation() {
     </div>
   );
 }
-//<Link to="about">About</Link>

@@ -16,6 +16,10 @@
     cursor: pointer;
 }
 
+.more-button__button_hidden {
+    display: none;
+}
+
 @media screen and (max-width: 1215px) {
     .more-button {
         padding: 50px 30px 80px;

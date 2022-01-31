@@ -67,7 +67,8 @@
 .movies-card__button-checked {
     display: block;
     position: absolute;
-    cursor: pointer;
+    /* cursor: none; */
+    /* pointer-events: none; */
     top: 14px;
     right: 14px;
     background: url(../../images/checked-button.svg);
