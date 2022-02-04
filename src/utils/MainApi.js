@@ -72,16 +72,16 @@ class MainApi {
       headers: this._headers,
       body: JSON.stringify({
         country: movie.country ? movie.country : "Country",
-        director: movie.director,
+        director: movie.director ? movie.director : "Unknown Director",
         duration: movie.duration,
-        year: movie.year,
-        description: movie.description,
+        year: movie.year ? movie.year : "Unknown Year",
+        description: movie.description ? movie.description : "Unknown Description",
         image: `${MOVIES_API_URL}${movie.image.url}`,
         thumbnail: `${MOVIES_API_URL}${movie.image.url}`,
         trailer: movie.trailerLink,
         movieId: movie.id.toString(),
-        nameRU: movie.nameRU,
-        nameEN: movie.nameEN,
+        nameRU: movie.nameRU ? movie.nameRU : "RusName",
+        nameEN: movie.nameEN ? movie.nameEN : "EngName",
       }),
     }).then(this._checkStatus);
   }

@@ -1,7 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-
 import "./MoviesCard.css";
 
 export default function MoviesCard({
@@ -10,14 +9,22 @@ export default function MoviesCard({
   title,
   filmDuration,
   trailerLink,
-  handleButtonClick,
+  handleSaveMovie,
+  handleDeleteMovie,
   savedMovies,
 }) {
   const location = useLocation();
   const [isSaved, setIsSaved] = useState(false);
-  
+
   function setButton() {
-    if (location.pathname === "/movies") {
+    if (location.pathname === "/movies" && isSaved) {
+      return (
+        <button
+          className="movies-card__button-checked"
+          onClick={(event) => handleCheckedButton(event)}
+        />
+      );
+    } else if (location.pathname === "/movies" && !isSaved) {
       return (
         <button className="movies-card__button-save" onClick={(event) => handleSaveButton(event)} />
       );
@@ -34,11 +41,15 @@ export default function MoviesCard({
   function handleSaveButton(event) {
     const elem = event.target;
     elem.classList.toggle("movies-card__button-checked");
-    handleButtonClick(movie, isSaved);
+    handleSaveMovie(movie, isSaved);
     setIsSaved(savedMovies.some((savedMovie) => movie.id === savedMovie.id));
   }
+  function handleCheckedButton(event) {
+    handleDeleteMovie(movie, isSaved);
+  }
+
   function handleDeleteButton(event) {
-    handleButtonClick(movie, isSaved);
+    handleDeleteMovie(movie, isSaved);
   }
   useEffect(() => {
     setIsSaved(savedMovies.some((savedMovie) => movie.id === savedMovie.id));

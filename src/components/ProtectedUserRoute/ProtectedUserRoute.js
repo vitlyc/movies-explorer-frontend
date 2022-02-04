@@ -1,7 +1,8 @@
 import { Navigate } from "react-router-dom";
 
 function ProtectedUserRoute({ Component, ...props }) {
-  if (!props.isLoggedIn) {
+  console.log(props.isLoggedIn);
+  if (props.isLoggedIn) {
     return <Component {...props} />;
   }
   return <Navigate to="/" />;

@@ -1,6 +1,7 @@
 import "./Movies.css";
 import { useState, useEffect } from "react";
 import { WIDTH_500, WIDTH_800 } from "../../utils/constants";
+import { SHORT_MOVIE_DURATION } from "../../utils/constants";
 
 import Header from "../Header/Header";
 import Navigation from "../Navigation/Navigation";
@@ -9,7 +10,6 @@ import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import MoreButton from "../MoreButton/MoreButton";
 import Footer from "../Footer/Footer";
 
-
 export default function Movies({
   isLoggedIn,
   shortMovie,
@@ -17,15 +17,25 @@ export default function Movies({
   filterShortMovies,
   movies,
   savedMovies,
-  handleButtonClick,
+  handleSaveMovie,
+  handleDeleteMovie,
   preloaderVisible,
   onSearch,
   searchMessage,
   setSearchMessage,
   sendingRequest,
 }) {
-
-
+  const [stateMovieForm, setStateMovieForm] = useState({
+    isShort: false,
+    reqText: "",
+  });
+  function filterShortMovies(movies) {
+    if (stateMovieForm.isShort) {
+      return movies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
+    } else {
+      return movies.filter((movie) => movie.duration > 0);
+    }
+  }
   const [amountMovieCards, setAmountMovieCards] = useState({
     initialMovies: 0,
     moreMovies: 0,
@@ -40,33 +50,37 @@ export default function Movies({
       setAmountMovieCards({ startCards: 12, moreCards: 3 });
     }
   };
-useEffect(() => {
-  setSearchMessage("");
-      amountMovieCardsSetter();
-}, []);
+  useEffect(() => {
+    setSearchMessage("");
+    amountMovieCardsSetter();
+    if (localStorage.moviesRequest) {
+      setStateMovieForm(JSON.parse(localStorage.moviesRequest));
+    }
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", amountMovieCardsSetter);
-
     return () => {
       window.removeEventListener("resize", amountMovieCardsSetter);
     };
   }, []);
-  
+
   return (
     <>
       <Header style={{ backgroundColor: "#FFFFFF" }} children={<Navigation />} />
       <SearchForm
         onSearch={onSearch}
-        shortMovie={shortMovie}
-        setShortMovie={setShortMovie}
+        shortMovie={stateMovieForm}
+        setShortMovie={setStateMovieForm}
         sendingRequest={sendingRequest}
+        setSearchMessage={setSearchMessage}
       />
       <MoviesCardList
         preloaderVisible={preloaderVisible}
         movies={filterShortMovies(movies)}
         savedMovies={savedMovies}
-        handleButtonClick={handleButtonClick}
+        handleSaveMovie={handleSaveMovie}
+        handleDeleteMovie={handleDeleteMovie}
         amountMovieCards={amountMovieCards}
         setAmountMovieCards={setAmountMovieCards}
         amountMovieCardsSetter={amountMovieCardsSetter}

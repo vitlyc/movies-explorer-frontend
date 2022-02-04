@@ -9,6 +9,7 @@ export default function FormValidator() {
     const target = event.target;
     const name = target.name;
     const value = target.value;
+     
     setValues({
       ...values,
       [name]: value,
@@ -18,6 +19,7 @@ export default function FormValidator() {
       [name]: target.validationMessage,
     });
     setIsValid(target.closest("form").checkValidity());
+    
   };
 
   const resetForm = useCallback(

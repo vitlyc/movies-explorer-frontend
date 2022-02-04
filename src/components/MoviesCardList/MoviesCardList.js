@@ -12,6 +12,8 @@ import Preloader from "../Preloader/Preloader";
 export default function MoviesCardList({
   movies,
   savedMovies,
+  handleSaveMovie,
+  handleDeleteMovie,
   preloaderVisible,
   handleButtonClick,
   amountMovieCards,
@@ -20,15 +22,13 @@ export default function MoviesCardList({
   searchMessage,
   setSearchMessage,
 }) {
-const { pathname } = useLocation();
-
-
-useEffect(() => {
-  setSearchMessage("");
-  if (pathname !== "/saved-movies") {
-    amountMovieCardsSetter();
-  }
-}, []);
+  const { pathname } = useLocation();
+  useEffect(() => {
+    setSearchMessage("");
+    if (pathname !== "/saved-movies") {
+      amountMovieCardsSetter();
+    }
+  }, []);
 
   return (
     <section className="movies-cardlist">
@@ -40,7 +40,8 @@ useEffect(() => {
       )}
       <ul className="movies-cardlist__list" id="hidden">
         {pathname === "/movies"
-          ? movies.slice(0, amountMovieCards.startCards)
+          ? movies
+              .slice(0, amountMovieCards.startCards)
               .map((movie) => (
                 <MoviesCard
                   key={movie.id}
@@ -49,7 +50,8 @@ useEffect(() => {
                   filmDuration={getHoursAndMins(movie)}
                   imageUrl={`${MOVIES_API_URL}${movie.image.url}`}
                   trailerLink={movie.trailerLink}
-                  handleButtonClick={handleButtonClick}
+                  handleSaveMovie={handleSaveMovie}
+                  handleDeleteMovie={handleDeleteMovie}
                   savedMovies={savedMovies}
                 />
               ))
@@ -61,15 +63,12 @@ useEffect(() => {
                 filmDuration={getHoursAndMins(movie)}
                 imageUrl={movie.image}
                 trailerLink={movie.trailer}
-                handleButtonClick={handleButtonClick}
+                handleSaveMovie={handleSaveMovie}
+                handleDeleteMovie={handleDeleteMovie}
                 savedMovies={movies}
               />
             ))}
       </ul>
-      {/* <MoreButton
-        amountMovieCards={amountMovieCards}
-        setAmountMovieCards={setAmountMovieCards}
-      /> */}
     </section>
   );
 }

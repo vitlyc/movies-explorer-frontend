@@ -1,23 +1,34 @@
 import "./SearchForm.css";
 import FormValidator from "../../utils/FormValidator";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-export default function SearchForm({
-  onSearch,
-  shortMovie,
-  setShortMovie,
-  sendingRequest,
-}) {
-  const { values, isValid, handleChange } = FormValidator();
+export default function SearchForm({ onSearch, shortMovie, setShortMovie, sendingRequest, setSearchMessage }) {
+  const location = useLocation();
 
-  const { searchRequest } = values;
-  
-  const handleFormSubmit = (evt) => {
+  function handleFormSubmit(evt) {
+//     checkingRequest();
+// console.log('submit');
     evt.preventDefault();
-    onSearch(searchRequest);
+    // setSearchMessage("Введите минимум два символа");
+    // checkingRequest();
+    onSearch(shortMovie, location);
   }
-  const shortMovieHandler = () => {
-    setShortMovie(!shortMovie);
-  };
+  function handleChangeSwitch() {
+    setShortMovie({ reqText: shortMovie.reqText, isShort: !shortMovie.isShort });
+  }
+  function handleChangeInput(evt) {
+    setShortMovie({ reqText: evt.target.value, isShort: shortMovie.isShort });
+  }
+  // function checkingRequest(){
+  //   console.log('hi');
+  //   console.log(shortMovie.reqText.length);
+  //   if(shortMovie.reqText.length <2) {
+  //     setSearchMessage('Введите минимум два символа');
+  //     return
+  //   }
+  // }
+
   return (
     <div className="search-form">
       <form className="form-search" name="search" onSubmit={handleFormSubmit} noValidate>
@@ -25,15 +36,15 @@ export default function SearchForm({
           className="form-search__input"
           minLength={2}
           name="searchRequest"
-          onChange={handleChange}
-          value={searchRequest || ""}
+          onChange={handleChangeInput}
+          value={shortMovie.reqText}
           required
           disabled={sendingRequest ? true : false}
         />
         <button
           type="submit"
           className="form-search__submit-button"
-          disabled={isValid ? false : true}
+          disabled={sendingRequest ? true : false}
         >
           Поиск
         </button>
@@ -44,7 +55,8 @@ export default function SearchForm({
           className="switch__input"
           type="checkbox"
           name="shortMovies"
-          onClick={shortMovieHandler}
+          onChange={handleChangeSwitch}
+          checked={shortMovie.isShort}
         />
 
         <label htmlFor="switch" className="switch__label">

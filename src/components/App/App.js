@@ -21,19 +21,17 @@ import SavedMovies from "../SavedMovies/SavedMovies";
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [authMessage, setAuthMessage] = useState("");
   const [sendingRequest, setSendingRequest] = useState(false);
-  const [shortMovie, setShortMovie] = useState(false);
-  const [foundAllMovies, setFoundAllMovies] = useState([]);
-  const [savedMovies, setSavedMovies] = useState([]);
   const [preloaderVisible, setPreloaderVisible] = useState(false);
   const [searchMessage, setSearchMessage] = useState("");
   const [allMovies, setAllMovies] = useState([]);
+  const [foundAllMovies, setFoundAllMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState([]);
   const [foundSavedMovies, setFoundSavedMovies] = useState([]);
   const navigate = useNavigate();
 
-  // console.log(isLoggedIn);
 
   function handleLogin(data) {
     setSendingRequest(true);
@@ -42,7 +40,9 @@ function App() {
       .then((res) => {
         checkToken();
         setAuthMessage("");
-        navigate("/profile");
+        setIsLoggedIn(true);
+        setFoundAllMovies([]);
+        navigate("/movies");
       })
       .catch((err) => {
         console.log(err);
@@ -63,7 +63,6 @@ function App() {
       .register(data)
       .then((res) => {
         setAuthMessage("");
-        // const { email, password } = data;
         handleLogin(data);
       })
       .catch((err) => {
@@ -81,8 +80,8 @@ function App() {
     mainApi
       .getUser()
       .then((res) => {
-        setIsLoggedIn(true);
         setCurrentUser(res);
+        setIsLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
@@ -112,23 +111,22 @@ function App() {
       .then((res) => {
         setCurrentUser({});
         setIsLoggedIn(false);
+        // setAllMovies([]);
+        // setSavedMovies([]);
+        // setFoundSavedMovies([]);
+        // foundSavedMovies([])
         localStorage.clear();
-
+        
         navigate("/");
       })
       .catch(console.log);
   }
-  function filterShortMovies(movies) {
-    if (shortMovie) {
-      return movies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
-    } else {
-      return movies.filter((movie) => movie.duration > 0);
-    }
-  }
 
   function findMoviesByKeywords(movies, searchRequest) {
-    if (!searchRequest) {
-      return;
+    if (searchRequest.length < 2) {
+      setSearchMessage("Введите минимум два символа");
+      const foundMovies =[]
+      return foundMovies;
     }
     const foundMovies = movies.filter((movie) =>
       movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase())
@@ -136,8 +134,18 @@ function App() {
     if (foundMovies.length === 0) {
       setSearchMessage("Ничего не найдено");
     }
+    
     return foundMovies;
+   
   }
+  
+  function handleSavedMovieSearchFormSubmit(shortMovie, location) {
+    const searchRequest = shortMovie.reqText;
+    handleSaveRequest(shortMovie, location);
+    setSearchMessage("");
+    setSavedMovies(findMoviesByKeywords(savedMovies, searchRequest));
+  }
+
   function handleSaveMovie(movie, isSaved) {
     if (isSaved) return;
     mainApi
@@ -153,7 +161,9 @@ function App() {
       setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== deletedMovie._id));
     });
   }
-  function handleMovieSearchFormSubmit(searchRequest) {
+  function handleMovieSearchFormSubmit(shortMovie, location) {
+    handleSaveRequest(shortMovie, location);
+    const searchRequest = shortMovie.reqText;
     setSearchMessage("");
     setSendingRequest(true);
     if (!localStorage.getItem("movies")) {
@@ -182,9 +192,14 @@ function App() {
       setFoundAllMovies(foundMovies);
     }
   }
-  function handleSavedMovieSearchFormSubmit(searchRequest) {
-    setSearchMessage("");
-    setFoundSavedMovies(findMoviesByKeywords(savedMovies, searchRequest));
+
+  function handleSaveRequest(shortMovie, location) {
+    if (shortMovie.reqText.length < 2) return;
+    if (location.pathname === "/movies") {
+      localStorage.setItem("moviesRequest", JSON.stringify(shortMovie));
+    } else {
+      localStorage.setItem("savedMoviesRequest", JSON.stringify(shortMovie));
+    }
   }
 
   function getSavedMovies() {
@@ -194,6 +209,7 @@ function App() {
         const tempMovies = movies.map((movie) => {
           return { ...movie, id: movie.movieId };
         });
+
         setSavedMovies(tempMovies);
         setFoundSavedMovies(tempMovies);
       })
@@ -210,6 +226,7 @@ function App() {
         setFoundAllMovies(JSON.parse(localStorage.foundMovies));
       }
     }
+    // localStorage.clear();
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -220,11 +237,47 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path="/" element={<Main isLoggedIn={isLoggedIn} />} />
+        <Route
+          path="/movies"
+          isLoggedIn={isLoggedIn}
+          element={
+            <ProtectedRoute
+              Component={Movies}
+              isLoggedIn={isLoggedIn}
+              movies={foundAllMovies}
+              savedMovies={savedMovies}
+              handleSaveMovie={handleSaveMovie}
+              handleDeleteMovie={handleDeleteMovie}
+              preloaderVisible={preloaderVisible}
+              onSearch={handleMovieSearchFormSubmit}
+              searchMessage={searchMessage}
+              setSearchMessage={setSearchMessage}
+              sendingRequest={sendingRequest}
+            />
+          }
+        />
+        <Route
+          path="/saved-movies"
+          isLoggedIn={isLoggedIn}
+          element={
+            <ProtectedRoute
+              Component={SavedMovies}
+              isLoggedIn={isLoggedIn}
+              movies={savedMovies}
+              savedMovies={savedMovies}
+              handleSaveMovie={handleSaveMovie}
+              handleDeleteMovie={handleDeleteMovie}
+              onSearch={handleSavedMovieSearchFormSubmit}
+              searchMessage={searchMessage}
+              setSearchMessage={setSearchMessage}
+            />
+          }
+        />
 
         <Route
           path="/signup"
           element={
-            <ProtectedUserRoute
+            <ProtectedRoute
               Component={Register}
               isLoggedIn={isLoggedIn}
               handleRegister={handleRegister}
@@ -236,7 +289,7 @@ function App() {
         <Route
           path="/signin"
           element={
-            <ProtectedUserRoute
+            <ProtectedRoute
               Component={Login}
               isLoggedIn={isLoggedIn}
               handleLogin={handleLogin}
@@ -245,7 +298,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/profile"
           element={
@@ -259,45 +311,6 @@ function App() {
             />
           }
         />
-        <Route
-          path="/movies"
-          element={
-            <ProtectedRoute
-              Component={Movies}
-              isLoggedIn={isLoggedIn}
-              shortMovie={shortMovie}
-              setShortMovie={setShortMovie}
-              filterShortMovies={filterShortMovies}
-              movies={foundAllMovies}
-              savedMovies={savedMovies}
-              handleButtonClick={handleSaveMovie}
-              preloaderVisible={preloaderVisible}
-              onSearch={handleMovieSearchFormSubmit}
-              searchMessage={searchMessage}
-              setSearchMessage={setSearchMessage}
-              sendingRequest={sendingRequest}
-            />
-          }
-        />
-        <Route
-          path="/saved-movies"
-          element={
-            <ProtectedRoute
-              Component={SavedMovies}
-              isLoggedIn={isLoggedIn}
-              shortMovie={shortMovie}
-              setShortMovie={setShortMovie}
-              filterShortMovies={filterShortMovies}
-              movies={savedMovies}
-              savedMovies={savedMovies}
-              handleButtonClick={handleDeleteMovie}
-              onSearch={handleSavedMovieSearchFormSubmit}
-              searchMessage={searchMessage}
-              setSearchMessage={setSearchMessage}
-            />
-          }
-        />
-
         <Route path="*" element={<NotFound />} />
       </Routes>
     </CurrentUserContext.Provider>

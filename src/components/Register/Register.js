@@ -1,18 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormValidator from "../../utils/FormValidator";
 import "./Register.css";
 import logo from "../../images/logo.svg";
 
-export default function Register({ handleRegister, authMessage, sendingRequest }) {
+export default function Register({ handleRegister, authMessage, sendingRequest, isLoggedIn }) {
   const { values, errors, isValid, handleChange, resetForm } = FormValidator();
   const { name, email, password } = values;
 
- 
   const handleRegisterFormSubmit = (evt) => {
     evt.preventDefault();
     handleRegister({ name, email, password });
     resetForm();
   };
+
+
   return (
     <section className="register">
       <div className="register__container">
@@ -55,6 +56,7 @@ export default function Register({ handleRegister, authMessage, sendingRequest }
               type="email"
               className="form__input"
               name="email"
+              pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
               placeholder="Введите e-mail"
               onChange={handleChange}
               value={email || ""}
