@@ -32,7 +32,6 @@ function App() {
   const [foundSavedMovies, setFoundSavedMovies] = useState([]);
   const navigate = useNavigate();
 
-
   function handleLogin(data) {
     setSendingRequest(true);
     return mainApi
@@ -42,7 +41,7 @@ function App() {
         setAuthMessage("");
         setIsLoggedIn(true);
         setFoundAllMovies([]);
-        navigate("/movies");
+        // navigate("/movies");
       })
       .catch((err) => {
         console.log(err);
@@ -54,6 +53,8 @@ function App() {
       })
       .finally(() => {
         setSendingRequest(false);
+prepareLS();
+
       });
   }
 
@@ -82,6 +83,7 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
         setIsLoggedIn(true);
+        getSavedMovies(res._id);
       })
       .catch((err) => {
         console.log(err);
@@ -111,21 +113,21 @@ function App() {
       .then((res) => {
         setCurrentUser({});
         setIsLoggedIn(false);
-        // setAllMovies([]);
-        // setSavedMovies([]);
-        // setFoundSavedMovies([]);
-        // foundSavedMovies([])
+        setAllMovies([]);
+        setSavedMovies([]);
+        setFoundSavedMovies([]);
         localStorage.clear();
-        
+
         navigate("/");
       })
       .catch(console.log);
   }
 
   function findMoviesByKeywords(movies, searchRequest) {
+    console.log(searchRequest);
     if (searchRequest.length < 2) {
       setSearchMessage("Введите минимум два символа");
-      const foundMovies =[]
+      const foundMovies = [];
       return foundMovies;
     }
     const foundMovies = movies.filter((movie) =>
@@ -134,16 +136,14 @@ function App() {
     if (foundMovies.length === 0) {
       setSearchMessage("Ничего не найдено");
     }
-    
+
     return foundMovies;
-   
   }
-  
-  function handleSavedMovieSearchFormSubmit(shortMovie, location) {
-    const searchRequest = shortMovie.reqText;
-    handleSaveRequest(shortMovie, location);
+
+  function handleSavedMovieSearchFormSubmit(searchRequest, location) {
+    handleSaveRequest(searchRequest, location);
     setSearchMessage("");
-    setSavedMovies(findMoviesByKeywords(savedMovies, searchRequest));
+    setFoundSavedMovies(findMoviesByKeywords(savedMovies, searchRequest));
   }
 
   function handleSaveMovie(movie, isSaved) {
@@ -158,12 +158,15 @@ function App() {
   function handleDeleteMovie(movie) {
     const deleteMovieId = savedMovies.find((item) => item.id === movie.id)._id;
     mainApi.deleteMyMovie(deleteMovieId).then((deletedMovie) => {
-      setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== deletedMovie._id));
+      setSavedMovies(
+        savedMovies.filter((savedMovie) => savedMovie._id !== deletedMovie._id)
+      );
     });
   }
-  function handleMovieSearchFormSubmit(shortMovie, location) {
-    handleSaveRequest(shortMovie, location);
-    const searchRequest = shortMovie.reqText;
+  function handleMovieSearchFormSubmit(searchRequest, location) {
+    console.log(searchRequest);
+    handleSaveRequest(searchRequest, location);
+
     setSearchMessage("");
     setSendingRequest(true);
     if (!localStorage.getItem("movies")) {
@@ -186,42 +189,59 @@ function App() {
         });
     } else {
       setAllMovies(JSON.parse(localStorage.movies));
-      const foundMovies = findMoviesByKeywords(JSON.parse(localStorage.movies), searchRequest);
+      const foundMovies = findMoviesByKeywords(
+        JSON.parse(localStorage.movies),
+        searchRequest
+      );
       localStorage.setItem("foundMovies", JSON.stringify(foundMovies));
       setSendingRequest(false);
       setFoundAllMovies(foundMovies);
     }
   }
 
-  function handleSaveRequest(shortMovie, location) {
-    if (shortMovie.reqText.length < 2) return;
+  function handleSaveRequest(searchRequest, location) {
     if (location.pathname === "/movies") {
-      localStorage.setItem("moviesRequest", JSON.stringify(shortMovie));
+      localStorage.setItem("moviesRequest", JSON.stringify(searchRequest));
     } else {
-      localStorage.setItem("savedMoviesRequest", JSON.stringify(shortMovie));
+      localStorage.setItem("savedMoviesRequest", JSON.stringify(searchRequest));
     }
   }
 
-  function getSavedMovies() {
+  function handleSaveSwitch(switchPosition, location) {
+    console.log(switchPosition);
+    if (location.pathname === "/movies") {
+      localStorage.setItem("moviesSwitch", JSON.stringify(switchPosition));
+    } else {
+      localStorage.setItem("savedMoviesSwitch", JSON.stringify(switchPosition));
+    }
+  }
+  function getSavedMovies(userID) {
     mainApi
       .getMyMovies()
       .then((movies) => {
         const tempMovies = movies.map((movie) => {
           return { ...movie, id: movie.movieId };
         });
-
-        setSavedMovies(tempMovies);
-        setFoundSavedMovies(tempMovies);
+        const moviesToSave = tempMovies.filter((movie) => {
+          return movie.owner._id == userID;
+        });
+        setSavedMovies(moviesToSave);
+        setFoundSavedMovies(moviesToSave);
       })
       .catch((err) => {
         console.log(err.message);
       })
       .finally(() => {});
   }
+  function prepareLS() {
+    localStorage.setItem("moviesSwitch", JSON.stringify(false));
+    localStorage.setItem("moviesRequest", JSON.stringify(''));
+    localStorage.setItem("savedMoviesSwitch", JSON.stringify(''));
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
-      getSavedMovies();
+      // getSavedMovies();
       if (localStorage.getItem("foundMovies")) {
         setFoundAllMovies(JSON.parse(localStorage.foundMovies));
       }
@@ -232,6 +252,10 @@ function App() {
   useEffect(() => {
     checkToken();
   }, []);
+
+  useEffect(() => {
+    setFoundSavedMovies(savedMovies);
+  }, [savedMovies]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -253,6 +277,7 @@ function App() {
               searchMessage={searchMessage}
               setSearchMessage={setSearchMessage}
               sendingRequest={sendingRequest}
+              handleSaveSwitch={handleSaveSwitch}
             />
           }
         />
@@ -263,13 +288,15 @@ function App() {
             <ProtectedRoute
               Component={SavedMovies}
               isLoggedIn={isLoggedIn}
-              movies={savedMovies}
+              movies={foundSavedMovies}
               savedMovies={savedMovies}
               handleSaveMovie={handleSaveMovie}
               handleDeleteMovie={handleDeleteMovie}
               onSearch={handleSavedMovieSearchFormSubmit}
               searchMessage={searchMessage}
               setSearchMessage={setSearchMessage}
+              setFoundSavedMovies={setFoundSavedMovies}
+              handleSaveSwitch={handleSaveSwitch}
             />
           }
         />

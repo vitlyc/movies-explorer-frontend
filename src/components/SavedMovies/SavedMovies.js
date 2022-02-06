@@ -19,6 +19,8 @@ export default function SavedMovies({
   handleDeleteMovie,
   searchMessage,
   setSearchMessage,
+  setFoundSavedMovies,
+  handleSaveSwitch,
 }) {
   const [stateSavedMovieForm, setStateSavedMovieForm] = useState({
     isShort: false,
@@ -34,13 +36,16 @@ export default function SavedMovies({
   }
   useEffect(() => {
     setSearchMessage("");
-    if (localStorage.savedMoviesRequest) {
-      const tempState = JSON.parse(localStorage.savedMoviesRequest);
-      setStateSavedMovieForm(JSON.parse(localStorage.savedMoviesRequest));
-    
-    }
+    setFoundSavedMovies(savedMovies);
   }, []);
-
+  useEffect(() => {
+    const savedMoviesSwitch = localStorage.getItem("savedMoviesSwitch");
+    console.log(savedMoviesSwitch);
+    setStateSavedMovieForm({
+      isShort: JSON.parse(savedMoviesSwitch),
+      reqText: stateSavedMovieForm.reqText,
+    });
+  }, []);
   return (
     <>
       <Header style={{ backgroundColor: "#FFFFFF" }} children={<Navigation />} />
@@ -49,9 +54,11 @@ export default function SavedMovies({
         shortMovie={stateSavedMovieForm}
         setShortMovie={setStateSavedMovieForm}
         setSearchMessage={setSearchMessage}
+        handleSaveSwitch={handleSaveSwitch}
       />
       <MoviesCardList
         movies={filterShortMovies(movies)}
+        savedMovies={savedMovies}
         handleSaveMovie={handleSaveMovie}
         handleDeleteMovie={handleDeleteMovie}
         searchMessage={searchMessage}

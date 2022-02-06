@@ -8,7 +8,6 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import MoreButton from "../MoreButton/MoreButton";
 import Preloader from "../Preloader/Preloader";
 
-
 export default function MoviesCardList({
   movies,
   savedMovies,
@@ -23,12 +22,21 @@ export default function MoviesCardList({
   setSearchMessage,
 }) {
   const { pathname } = useLocation();
+   useEffect(() => {
+     if (movies.length == 0) {
+       setSearchMessage("Ничего не найдено");
+     } else {
+       setSearchMessage("");
+     }
+   });
   useEffect(() => {
     setSearchMessage("");
     if (pathname !== "/saved-movies") {
       amountMovieCardsSetter();
     }
   }, []);
+
+ 
 
   return (
     <section className="movies-cardlist">

@@ -72,6 +72,7 @@ export default function Register({ handleRegister, authMessage, sendingRequest, 
               type="password"
               className="form__input"
               name="password"
+              autoComplete="off"
               minLength={8}
               placeholder="Введите пароль"
               onChange={handleChange}

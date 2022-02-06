@@ -1,33 +1,46 @@
 import "./SearchForm.css";
-import FormValidator from "../../utils/FormValidator";
 import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-export default function SearchForm({ onSearch, shortMovie, setShortMovie, sendingRequest, setSearchMessage }) {
+export default function SearchForm({
+  onSearch,
+  shortMovie,
+  setShortMovie,
+  sendingRequest,
+  handleSaveSwitch,
+}) {
   const location = useLocation();
-
+ 
   function handleFormSubmit(evt) {
-//     checkingRequest();
-// console.log('submit');
     evt.preventDefault();
-    // setSearchMessage("Введите минимум два символа");
-    // checkingRequest();
-    onSearch(shortMovie, location);
+    onSearch(shortMovie.reqText, location);
   }
-  function handleChangeSwitch() {
-    setShortMovie({ reqText: shortMovie.reqText, isShort: !shortMovie.isShort });
+  function handleChangeSwitch(evt) {
+    setShortMovie({ isShort: !shortMovie.isShort, reqText: shortMovie.reqText });
+    
   }
   function handleChangeInput(evt) {
-    setShortMovie({ reqText: evt.target.value, isShort: shortMovie.isShort });
+    console.log(evt.target.value);
+    setShortMovie({ isShort: shortMovie.isShort, reqText: evt.target.value });
   }
-  // function checkingRequest(){
-  //   console.log('hi');
-  //   console.log(shortMovie.reqText.length);
-  //   if(shortMovie.reqText.length <2) {
-  //     setSearchMessage('Введите минимум два символа');
-  //     return
-  //   }
-  // }
+// useEffect(() => {
+//   if (JSON.parse(localStorage.moviesSwitch) )
+//   {setShortMovie({
+//     isShort: JSON.parse(localStorage.moviesSwitch) || 'ff',
+//     reqText: "",
+//   })}
+// }, []);
+
+  useEffect(() => {
+    return ()=>{
+     if (location.pathname === "/movies") {
+       localStorage.setItem("moviesSwitch", JSON.stringify(shortMovie.isShort));
+     } else {
+       localStorage.setItem("savedMoviesSwitch", JSON.stringify(shortMovie.isShort));
+     }
+    }
+  }, );
+ 
 
   return (
     <div className="search-form">

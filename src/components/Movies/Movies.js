@@ -2,6 +2,7 @@ import "./Movies.css";
 import { useState, useEffect } from "react";
 import { WIDTH_500, WIDTH_800 } from "../../utils/constants";
 import { SHORT_MOVIE_DURATION } from "../../utils/constants";
+import { useLocation } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Navigation from "../Navigation/Navigation";
@@ -24,11 +25,16 @@ export default function Movies({
   searchMessage,
   setSearchMessage,
   sendingRequest,
+  handleSaveSwitch,
 }) {
+  console.log(JSON.parse(localStorage.getItem("moviesSwitch")));
   const [stateMovieForm, setStateMovieForm] = useState({
     isShort: false,
     reqText: "",
   });
+  const location = useLocation();
+  console.log(stateMovieForm);
+
   function filterShortMovies(movies) {
     if (stateMovieForm.isShort) {
       return movies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
@@ -36,6 +42,7 @@ export default function Movies({
       return movies.filter((movie) => movie.duration > 0);
     }
   }
+
   const [amountMovieCards, setAmountMovieCards] = useState({
     initialMovies: 0,
     moreMovies: 0,
@@ -50,12 +57,18 @@ export default function Movies({
       setAmountMovieCards({ startCards: 12, moreCards: 3 });
     }
   };
+
   useEffect(() => {
     setSearchMessage("");
     amountMovieCardsSetter();
-    if (localStorage.moviesRequest) {
-      setStateMovieForm(JSON.parse(localStorage.moviesRequest));
-    }
+    const moviesRequest = localStorage.getItem("moviesRequest");
+    const moviesSwitch = localStorage.getItem("moviesSwitch");
+    console.log(JSON.parse(moviesSwitch));
+    console.log(moviesRequest);
+    setStateMovieForm({
+      isShort: JSON.parse(moviesSwitch),
+      reqText: JSON.parse(moviesRequest),
+    });
   }, []);
 
   useEffect(() => {
@@ -73,7 +86,7 @@ export default function Movies({
         shortMovie={stateMovieForm}
         setShortMovie={setStateMovieForm}
         sendingRequest={sendingRequest}
-        setSearchMessage={setSearchMessage}
+        handleSaveSwitch={handleSaveSwitch}
       />
       <MoviesCardList
         preloaderVisible={preloaderVisible}

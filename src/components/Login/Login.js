@@ -50,6 +50,7 @@ export default function Login({ handleLogin, authMessage, sendingRequest, isLogg
                 type="password"
                 className="form__input"
                 name="password"
+                autoComplete="off"
                 minLength={8}
                 placeholder="Введите пароль"
                 onChange={handleChange}
