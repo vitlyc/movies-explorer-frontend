@@ -20,16 +20,9 @@ export default function SearchForm({
     
   }
   function handleChangeInput(evt) {
-    console.log(evt.target.value);
     setShortMovie({ isShort: shortMovie.isShort, reqText: evt.target.value });
   }
-// useEffect(() => {
-//   if (JSON.parse(localStorage.moviesSwitch) )
-//   {setShortMovie({
-//     isShort: JSON.parse(localStorage.moviesSwitch) || 'ff',
-//     reqText: "",
-//   })}
-// }, []);
+
 
   useEffect(() => {
     return ()=>{

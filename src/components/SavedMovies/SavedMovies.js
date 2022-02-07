@@ -40,7 +40,6 @@ export default function SavedMovies({
   }, []);
   useEffect(() => {
     const savedMoviesSwitch = localStorage.getItem("savedMoviesSwitch");
-    console.log(savedMoviesSwitch);
     setStateSavedMovieForm({
       isShort: JSON.parse(savedMoviesSwitch),
       reqText: stateSavedMovieForm.reqText,

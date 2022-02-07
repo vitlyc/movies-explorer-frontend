@@ -27,13 +27,11 @@ export default function Movies({
   sendingRequest,
   handleSaveSwitch,
 }) {
-  console.log(JSON.parse(localStorage.getItem("moviesSwitch")));
   const [stateMovieForm, setStateMovieForm] = useState({
     isShort: false,
     reqText: "",
   });
   const location = useLocation();
-  console.log(stateMovieForm);
 
   function filterShortMovies(movies) {
     if (stateMovieForm.isShort) {
@@ -63,8 +61,7 @@ export default function Movies({
     amountMovieCardsSetter();
     const moviesRequest = localStorage.getItem("moviesRequest");
     const moviesSwitch = localStorage.getItem("moviesSwitch");
-    console.log(JSON.parse(moviesSwitch));
-    console.log(moviesRequest);
+    
     setStateMovieForm({
       isShort: JSON.parse(moviesSwitch),
       reqText: JSON.parse(moviesRequest),

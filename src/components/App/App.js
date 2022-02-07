@@ -53,8 +53,7 @@ function App() {
       })
       .finally(() => {
         setSendingRequest(false);
-prepareLS();
-
+        prepareLS();
       });
   }
 
@@ -125,11 +124,11 @@ prepareLS();
 
   function findMoviesByKeywords(movies, searchRequest) {
     console.log(searchRequest);
-    if (searchRequest.length < 2) {
-      setSearchMessage("Введите минимум два символа");
-      const foundMovies = [];
-      return foundMovies;
-    }
+    // if (searchRequest.length < 2) {
+    //   setSearchMessage("Введите минимум два символа");
+    //   const foundMovies = [];
+    //   return foundMovies;
+    // }
     const foundMovies = movies.filter((movie) =>
       movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase())
     );
@@ -140,7 +139,8 @@ prepareLS();
     return foundMovies;
   }
 
-  function handleSavedMovieSearchFormSubmit(searchRequest, location) {
+  function handleSavedMovieSearchFormSubmit(searchText, location) {
+    const searchRequest = searchText.trim();
     handleSaveRequest(searchRequest, location);
     setSearchMessage("");
     setFoundSavedMovies(findMoviesByKeywords(savedMovies, searchRequest));
@@ -163,8 +163,9 @@ prepareLS();
       );
     });
   }
-  function handleMovieSearchFormSubmit(searchRequest, location) {
-    console.log(searchRequest);
+  function handleMovieSearchFormSubmit(searchText, location) {
+    const searchRequest = searchText.trim();
+    console.log(searchMessage);
     handleSaveRequest(searchRequest, location);
 
     setSearchMessage("");
@@ -235,8 +236,8 @@ prepareLS();
   }
   function prepareLS() {
     localStorage.setItem("moviesSwitch", JSON.stringify(false));
-    localStorage.setItem("moviesRequest", JSON.stringify(''));
-    localStorage.setItem("savedMoviesSwitch", JSON.stringify(''));
+    localStorage.setItem("moviesRequest", JSON.stringify(""));
+    localStorage.setItem("savedMoviesSwitch", JSON.stringify(""));
   }
 
   useEffect(() => {
