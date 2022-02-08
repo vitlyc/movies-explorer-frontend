@@ -1,6 +1,6 @@
 export const MOVIES_API_URL = "https://api.nomoreparties.co";
-export const BASE_URL = "http://localhost:3001";
-// export const BASE_URL = "https://api.privetik.nomoredomain.nomoredomains.rocks";
+// export const BASE_URL = "http://localhost:3001";
+export const BASE_URL = "https://api.privetik.nomoredomain.nomoredomains.rocks";
 
 export const SHORT_MOVIE_DURATION = 40;
 

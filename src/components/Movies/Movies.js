@@ -25,7 +25,6 @@ export default function Movies({
   searchMessage,
   setSearchMessage,
   sendingRequest,
-  handleSaveSwitch,
 }) {
   const [stateMovieForm, setStateMovieForm] = useState({
     isShort: false,
@@ -83,7 +82,6 @@ export default function Movies({
         shortMovie={stateMovieForm}
         setShortMovie={setStateMovieForm}
         sendingRequest={sendingRequest}
-        handleSaveSwitch={handleSaveSwitch}
       />
       <MoviesCardList
         preloaderVisible={preloaderVisible}

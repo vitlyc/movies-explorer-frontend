@@ -20,7 +20,6 @@ export default function SavedMovies({
   searchMessage,
   setSearchMessage,
   setFoundSavedMovies,
-  handleSaveSwitch,
 }) {
   const [stateSavedMovieForm, setStateSavedMovieForm] = useState({
     isShort: false,
@@ -53,7 +52,6 @@ export default function SavedMovies({
         shortMovie={stateSavedMovieForm}
         setShortMovie={setStateSavedMovieForm}
         setSearchMessage={setSearchMessage}
-        handleSaveSwitch={handleSaveSwitch}
       />
       <MoviesCardList
         movies={filterShortMovies(movies)}

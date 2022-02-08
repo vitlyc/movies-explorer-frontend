@@ -208,14 +208,7 @@ function App() {
     }
   }
 
-  function handleSaveSwitch(switchPosition, location) {
-    console.log(switchPosition);
-    if (location.pathname === "/movies") {
-      localStorage.setItem("moviesSwitch", JSON.stringify(switchPosition));
-    } else {
-      localStorage.setItem("savedMoviesSwitch", JSON.stringify(switchPosition));
-    }
-  }
+  
   function getSavedMovies(userID) {
     mainApi
       .getMyMovies()
@@ -278,7 +271,6 @@ function App() {
               searchMessage={searchMessage}
               setSearchMessage={setSearchMessage}
               sendingRequest={sendingRequest}
-              handleSaveSwitch={handleSaveSwitch}
             />
           }
         />
@@ -297,7 +289,6 @@ function App() {
               searchMessage={searchMessage}
               setSearchMessage={setSearchMessage}
               setFoundSavedMovies={setFoundSavedMovies}
-              handleSaveSwitch={handleSaveSwitch}
             />
           }
         />
