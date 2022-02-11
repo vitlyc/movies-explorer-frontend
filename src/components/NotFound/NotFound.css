@@ -1,0 +1,55 @@
+.not-found__container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 246px 0 60px;
+}
+
+.not-found__header {
+    font-size: 140px;
+    line-height: 169px;
+}
+
+.not-found__text {
+    padding: 5px 0 184px;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.not-found__back {
+    padding: 0;
+    font-size: 14px;
+    line-height: 17px;
+    max-width: 42px;
+    color: #4285f4;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 850px) {
+    .not-found__container {
+        padding: 408px 0 222px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .not-found__container {
+        padding: 329px 0 30px;
+    }
+    .not-found__text {
+        font-size: 12px;
+        line-height: 15px;
+        padding: 10px 0 284px;
+    }
+    .not-found__header {
+        font-size: 80px;
+        line-height: 97px;
+    }
+    .not-found__back {
+        font-size: 12px;
+        line-height: 15px;
+    }
+}
