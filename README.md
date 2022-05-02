@@ -1,4 +1,4 @@
-# [Movies Explorer](target="_blank" https://privetik.nomoredomains.rocks)
+# [Movies Explorer](https://privetik.nomoredomains.rocks)
 ##### Дипломный проект курса "Веб-разработчик" от Яндекс.Практикум
 
 ## Функционал:
@@ -19,4 +19,4 @@
 ![API](https://img.shields.io/badge/-API-141130?style=for-the-badge)
 ---
 
-### Адрес Фронтенда: <target="_blank" https://privetik.nomoredomains.rocks>
+### Адрес Фронтенда: <https://privetik.nomoredomains.rocks>
